@@ -10,6 +10,9 @@ const nextConfig = {
       },
     ],
   },
+  // env: {
+  //   API_URL: "https://dressupexchange.somee.com/api",
+  // },
   // async rewrites() {
   //   return [
   //     {

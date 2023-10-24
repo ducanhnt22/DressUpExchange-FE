@@ -1,7 +1,9 @@
 import { IProduct, IProductList, ProductCreate } from "@/types";
 
 export async function getAllProduct(): Promise<IProductList> {
-  const res = await fetch(`${process.env.API_URL}/product`, { next: { revalidate: 120 } });
+  const res = await fetch(`${process.env.API_URL}/product`, {
+    next: { revalidate: 120 },
+  });
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
@@ -9,7 +11,10 @@ export async function getAllProduct(): Promise<IProductList> {
   return res.json();
 }
 
-export async function getProductByCategory(category: string, SortOrderPrice = "2"): Promise<IProduct> {
+export async function getProductByCategory(
+  category: string,
+  SortOrderPrice = "2"
+): Promise<IProduct> {
   let id;
   if (category === "others") {
     id = 3;
@@ -21,14 +26,17 @@ export async function getProductByCategory(category: string, SortOrderPrice = "2
     id = 2;
   }
   console.log(SortOrderPrice);
-  const res = await fetch(`${process.env.API_URL}/product?categoryId=${id}&SortOrderPrice=${SortOrderPrice}`, {
-    next: { revalidate: 120 },
-  });
+  const res = await fetch(
+    `${process.env.API_URL}/product?categoryId=${id}&SortOrderPrice=${SortOrderPrice}`,
+    {
+      next: { revalidate: 120 },
+    }
+  );
 
   return res.json();
 }
 
-export async function getProductByUserId(userId:string) : Promise<IProduct> {
+export async function getProductByUserId(userId: string): Promise<IProduct> {
   const res = await fetch(`${process.env.API_URL}/product?userId=${userId}`, {
     next: { revalidate: 120 },
   });
@@ -36,7 +44,9 @@ export async function getProductByUserId(userId:string) : Promise<IProduct> {
 }
 
 export async function getProductById(ProductId: string): Promise<IProduct> {
-  const res = await fetch(`${process.env.API_URL}/product/${ProductId}`, { next: { revalidate: 300 } });
+  const res = await fetch(`${process.env.API_URL}/product/${ProductId}`, {
+    next: { revalidate: 300 },
+  });
   return res.json();
 }
 
@@ -67,8 +77,11 @@ export async function getVoucherByProductId(productId: string) {
 }
 
 export async function getUserProduct(userId: string) {
-  const res = await fetch(`https://dressupexchange.somee.com/api/product?UserId=${userId}`, {
-    cache: "no-cache",
-  });
+  const res = await fetch(
+    `https://dressupexchange.somee.com/api/product?UserId=${userId}`,
+    {
+      cache: "no-cache",
+    }
+  );
   return res.json();
 }
