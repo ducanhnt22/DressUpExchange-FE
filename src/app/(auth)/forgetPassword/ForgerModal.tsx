@@ -18,14 +18,15 @@ function ForgerModal({ setOpen, phone }: props) {
       const res = await fetch(
         `https://dressupexchange.somee.com/api/send-sms/ChangePassword?phoneNumber=${phone}`,
         {
+          headers: { "Content-Type": "application/json" },
           method: "POST",
           body: JSON.stringify({ passwordChange: password }),
         }
       );
       if (res.ok) {
         toast.success("Password change successfully!!");
-        router.push("/signIn");
         setOpen(false);
+        router.push("/signIn");
       }
     } else {
       toast.error("Password and Confirm password is not same");
