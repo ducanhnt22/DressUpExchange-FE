@@ -28,10 +28,15 @@ interface userProductType {
 }
 export default async function MyProduct() {
   const session = await getServerSession(authOptions);
-  const userProduct: userProductType = await getUserProduct(session?.user.userId);
+  const userProduct: userProductType = await getUserProduct(
+    session?.user.userId
+  );
   return (
     <div>
-      <MyProductList userProduct={userProduct.items} token={session?.user.accessToken} />
+      <MyProductList
+        userProduct={userProduct.items}
+        token={session?.user.accessToken}
+      />
     </div>
   );
 }

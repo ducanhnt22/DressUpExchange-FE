@@ -8,7 +8,7 @@ export default function AddVoucherModal({
 }: {
   productId: number;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  token: string;
+  token: string | undefined;
 }) {
   const [name, setName] = useState<string>("");
   const [code, setCode] = useState<string>("");
@@ -16,11 +16,17 @@ export default function AddVoucherModal({
   const [remainingCount, setRemainingCount] = useState<number>(0);
 
   const handleAddVoucher = async () => {
-    const res = await fetch(`https://dressupexchange.somee.com/api/voucher/CreateVoucher?ProductID=${productId}`, {
-      method: "POST",
-      body: JSON.stringify({ name, code, discountAmount, remainingCount }),
-      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-    });
+    const res = await fetch(
+      `https://dressupexchange.somee.com/api/voucher/CreateVoucher?ProductID=${productId}`,
+      {
+        method: "POST",
+        body: JSON.stringify({ name, code, discountAmount, remainingCount }),
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const data = await res.json();
 
     if (res.ok) {
@@ -37,7 +43,9 @@ export default function AddVoucherModal({
       <div className="relative w-full max-w-2xl max-h-full m-auto">
         <div className="relative bg-white rounded-lg shadow dark:bg-stone-300">
           <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-stone-400">
-            <h3 className="flex text-xl justify-center font-semibold text-gray-900 ">Add Voucher</h3>
+            <h3 className="flex text-xl justify-center font-semibold text-gray-900 ">
+              Add Voucher
+            </h3>
             <button
               type="button"
               className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -64,7 +72,9 @@ export default function AddVoucherModal({
           </div>
           <div className="p-6 space-y-6">
             <div>
-              <label className="block mb-2 text-sm font-medium text-gray-900 ">Voucher Name</label>
+              <label className="block mb-2 text-sm font-medium text-gray-900 ">
+                Voucher Name
+              </label>
               <input
                 type="text"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -74,7 +84,9 @@ export default function AddVoucherModal({
               />
             </div>
             <div>
-              <label className="block mb-2 text-sm font-medium text-gray-900 ">Voucher Code</label>
+              <label className="block mb-2 text-sm font-medium text-gray-900 ">
+                Voucher Code
+              </label>
               <input
                 type="text"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -84,7 +96,9 @@ export default function AddVoucherModal({
               />
             </div>
             <div className="relative">
-              <label className="block mb-2 text-sm font-medium text-gray-900 ">Discount Amount</label>
+              <label className="block mb-2 text-sm font-medium text-gray-900 ">
+                Discount Amount
+              </label>
               <input
                 type="text"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -95,7 +109,9 @@ export default function AddVoucherModal({
               <span className="absolute top-1/2 right-2 text-xl">%</span>
             </div>
             <div>
-              <label className="block mb-2 text-sm font-medium text-gray-900 ">Voucher Quantity</label>
+              <label className="block mb-2 text-sm font-medium text-gray-900 ">
+                Voucher Quantity
+              </label>
               <input
                 type="text"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"

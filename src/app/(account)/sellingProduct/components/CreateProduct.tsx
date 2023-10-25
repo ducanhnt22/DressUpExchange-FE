@@ -4,7 +4,11 @@ import { ProductForm, Upload } from ".";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
-export default function CreateProduct({ token }: { token: string }) {
+export default function CreateProduct({
+  token,
+}: {
+  token: string | undefined;
+}) {
   const [name, setName] = useState<string>("");
   const [size, setSize] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
@@ -28,7 +32,10 @@ export default function CreateProduct({ token }: { token: string }) {
         images: imgUrl,
         categoryId: category,
       }),
-      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
     });
     const data = await res.json();
     toast.success(data);
@@ -37,23 +44,25 @@ export default function CreateProduct({ token }: { token: string }) {
 
   return (
     <div>
-      <div className="flex font-bold text-3xl my-4 justify-center">Selling Product</div>
+      <div className="flex font-bold text-3xl my-4 justify-center">
+        Selling Product
+      </div>
       <div className="flex flex-col justify-center items-center h-full ">
-      <ProductForm
-        setName={setName}
-        setSize={setSize}
-        setPrice={setPrice}
-        setQuantity={setQuantity}
-        setDescription={setDescription}
-        setCategory={setCategory}
-      />
-      <Upload token={token} imgUrl={imgUrl} setImgUrl={setImgUrl} />
-      <button
-        onClick={() => handleCreateProduct()}
-        className="p-3 mb-2 bg-orange-400 outline outline-offset outline-stone-500 mt-5 rounded-lg font-bold hover:bg-yellow-800"
-      >
-        Tạo mới sản phẩm
-      </button>
+        <ProductForm
+          setName={setName}
+          setSize={setSize}
+          setPrice={setPrice}
+          setQuantity={setQuantity}
+          setDescription={setDescription}
+          setCategory={setCategory}
+        />
+        <Upload token={token} imgUrl={imgUrl} setImgUrl={setImgUrl} />
+        <button
+          onClick={() => handleCreateProduct()}
+          className="p-3 mb-2 bg-orange-400 outline outline-offset outline-stone-500 mt-5 rounded-lg font-bold hover:bg-yellow-800"
+        >
+          Tạo mới sản phẩm
+        </button>
       </div>
     </div>
   );

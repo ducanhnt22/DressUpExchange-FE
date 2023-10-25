@@ -60,7 +60,9 @@ export default function ProductInfo({
   const handleAddVoucher = (voucherId: number) => {
     setQuantity(1);
     setVoucherId(voucherId);
-    const discount = voucher.vouchers.find((vc) => vc.voucherId === voucherId)?.discountAmount;
+    const discount = voucher.vouchers.find(
+      (vc) => vc.voucherId === voucherId
+    )?.discountAmount;
     if (discount) {
       setOriginPrice(price - price * (discount / 100));
       setBuyingPrice(price - price * (discount / 100));
@@ -71,8 +73,12 @@ export default function ProductInfo({
       <h1 className="font-semibold text-3xl text-[#473C33]">{name}</h1>
 
       <div className="mt-2">
-        <h2 className="font-bold text-2xl text-[#8A5656]">{buyingPrice.toLocaleString()}VND</h2>
-        <h2 className="font-bold text-xl text-[#8A5656]">Còn Lại: {totalQuantity}</h2>
+        <h2 className="font-bold text-2xl text-[#8A5656]">
+          {buyingPrice.toLocaleString()}VND
+        </h2>
+        <h2 className="font-bold text-xl text-[#8A5656]">
+          Còn Lại: {totalQuantity}
+        </h2>
       </div>
 
       <div className="flex items-center mt-2">
@@ -85,7 +91,10 @@ export default function ProductInfo({
       <div className="flex items-center gap-5 mt-2">
         <h3>Số lượng</h3>
         <div className="flex items-center border-2 border-solid border-[#FF9900] rounded-lg">
-          <button onClick={() => handleQuantity("increase")} className="text-center w-6 border-none outline-none h-6">
+          <button
+            onClick={() => handleQuantity("increase")}
+            className="text-center w-6 border-none outline-none h-6"
+          >
             +
           </button>
           <input
@@ -95,7 +104,10 @@ export default function ProductInfo({
             disabled
             className="text-center w-6 border-x-2 border-solid border-[#FF9900] h-6"
           />
-          <button onClick={() => handleQuantity("descrease")} className="text-center w-6 border-none outline-none h-6">
+          <button
+            onClick={() => handleQuantity("descrease")}
+            className="text-center w-6 border-none outline-none h-6"
+          >
             -
           </button>
         </div>
@@ -110,7 +122,11 @@ export default function ProductInfo({
           >
             <option className="bg-white">Hãy chọn voucher</option>
             {voucher.vouchers.map((vc) => (
-              <option className="bg-white" key={vc.voucherId} value={vc.voucherId}>
+              <option
+                className="bg-white"
+                key={vc.voucherId}
+                value={vc.voucherId}
+              >
                 {vc.voucherName} ({vc.discountAmount}%)
               </option>
             ))}
@@ -120,27 +136,61 @@ export default function ProductInfo({
 
       <div>
         <label className="relative inline-flex items-center mr-5 cursor-pointer mt-2">
-          <input type="checkbox" value="" className="sr-only peer" onChange={() => setToogleLaudry(!toogleLaudry)} />
+          <input
+            type="checkbox"
+            value=""
+            className="sr-only peer"
+            onChange={() => setToogleLaudry(!toogleLaudry)}
+          />
           <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-yellow-300  peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-400"></div>
-          <span className="ml-3 text-base font-medium text-gray-900 dark:text-gray-4  00">Dịch vụ giặt ủi</span>
+          <span className="ml-3 text-base font-medium text-gray-900 dark:text-gray-4  00">
+            Dịch vụ giặt ủi
+          </span>
         </label>
         {toogleLaudry && (
           <div>
             <div className="my-2">Lựa chọn dịch vụ của chúng tôi</div>
             <div className="flex mt-1 gap-4">
               <div className="flex-col items-center justify-center flex gap-1">
-                <input type="radio" value={2} name="laudry" onChange={(e) => setLaudryId(+e.target.value)} />
-                <Image src={fastLaudry} alt="fastLaudry" className="w-32 h-32 bg-white p-2 rounded" />
+                <input
+                  type="radio"
+                  value={2}
+                  name="laudry"
+                  onChange={(e) => setLaudryId(+e.target.value)}
+                />
+                <Image
+                  src={fastLaudry}
+                  alt="fastLaudry"
+                  className="w-32 h-32 bg-white p-2 rounded"
+                />
                 <h3>Giặt sấy nhanh</h3>
               </div>
               <div className="flex-col items-center justify-center flex gap-1">
-                <input type="radio" value={1} name="laudry" onChange={(e) => setLaudryId(+e.target.value)} />
-                <Image src={dryLaudry} alt="fastLaudry" className="w-32 h-32 bg-white p-2 rounded" />
+                <input
+                  type="radio"
+                  value={1}
+                  name="laudry"
+                  onChange={(e) => setLaudryId(+e.target.value)}
+                />
+                <Image
+                  src={dryLaudry}
+                  alt="fastLaudry"
+                  className="w-32 h-32 bg-white p-2 rounded"
+                />
                 <h3>Giặt sấy khô</h3>
               </div>
               <div className="flex-col items-center justify-center flex gap-1">
-                <input type="radio" value={3} name="laudry" onChange={(e) => setLaudryId(+e.target.value)} />
-                <Image src={fragrantLaudry} alt="fastLaudry" className="w-32 h-32 bg-white p-2 rounded" />
+                <input
+                  type="radio"
+                  value={3}
+                  name="laudry"
+                  onChange={(e) => setLaudryId(+e.target.value)}
+                />
+                <Image
+                  src={fragrantLaudry}
+                  alt="fastLaudry"
+                  className="w-32 h-32 bg-white p-2 rounded"
+                />
                 <h3>Giặt sấy thơm</h3>
               </div>
             </div>

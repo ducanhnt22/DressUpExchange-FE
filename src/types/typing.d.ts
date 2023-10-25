@@ -10,7 +10,9 @@ export interface IProduct {
   images: [string];
 }
 
-export type ProductCreate = Omit<IProduct, "userId" | "productId"> & { categoryId: number };
+export type ProductCreate = Omit<IProduct, "userId" | "productId"> & {
+  categoryId: number;
+};
 
 export interface IProductList {
   count: number;
@@ -40,6 +42,12 @@ export interface IProductCart {
 export interface IVoucher {
   total: number;
   vouchers: [
-    { voucherId: number; voucherName: string; voucherCode: string; discountAmount: number; expireDate: string }
+    {
+      voucherId: number;
+      voucherName: string;
+      voucherCode: string;
+      discountAmount: number;
+      expireDate: string;
+    }
   ];
 }

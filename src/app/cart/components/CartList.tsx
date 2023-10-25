@@ -8,10 +8,10 @@ import { useRouter } from "next/navigation";
 import { redirect } from "next/navigation";
 
 type props = {
-  address: string;
-  name: string;
-  phone: string;
-  token: string;
+  address: string | undefined;
+  name: string | undefined;
+  phone: string | undefined;
+  token: string | undefined;
 };
 export default function CartList({ address, name, phone, token }: props) {
   const [paymentMethod, setPaymentMethod] = useState("");

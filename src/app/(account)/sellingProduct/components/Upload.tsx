@@ -4,7 +4,7 @@ import React, { useCallback, useState, memo } from "react";
 import { AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
 
 type props = {
-  token: string;
+  token: string | undefined;
   imgUrl: string[];
   setImgUrl: React.Dispatch<React.SetStateAction<string[]>>;
 };
@@ -12,37 +12,43 @@ function Upload({ token, imgUrl, setImgUrl }: props) {
   // const [imgUrl, setImgUrl] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleUploadImage = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files) {
-      const file = files[0];
-      if (!file) {
-        return;
-      }
-      const formData = new FormData();
-      formData.append("file", file);
-
-      try {
-        setLoading(true);
-        const res = await fetch(`https://dressupexchange.somee.com/api/files`, {
-          method: "POST",
-          body: formData,
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          setImgUrl((pre) => [...pre, data.imgUrl]);
-          setLoading(false);
+  const handleUploadImage = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const files = e.target.files;
+      if (files) {
+        const file = files[0];
+        if (!file) {
+          return;
         }
-        if (res.status === 401) {
-          console.log("err");
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+          setLoading(true);
+          const res = await fetch(
+            `https://dressupexchange.somee.com/api/files`,
+            {
+              method: "POST",
+              body: formData,
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+
+          if (res.ok) {
+            const data = await res.json();
+            setImgUrl((pre) => [...pre, data.imgUrl]);
+            setLoading(false);
+          }
+          if (res.status === 401) {
+            console.log("err");
+          }
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
       }
-    }
-  }, []);
+    },
+    []
+  );
 
   return (
     <div className="flex gap-2 flex-col w-1/2">
@@ -79,26 +85,46 @@ function Upload({ token, imgUrl, setImgUrl }: props) {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+              ></path>
             </svg>
           )}
 
-          <span className="text-gray-600 group-hover:text-gray-700 text-center">Nhấp để tải lên hình ảnh</span>
-          <input type="file" id="upload" className="hidden" onChange={(e) => handleUploadImage(e)} disabled={loading} />
+          <span className="text-gray-600 group-hover:text-gray-700 text-center">
+            Nhấp để tải lên hình ảnh
+          </span>
+          <input
+            type="file"
+            id="upload"
+            className="hidden"
+            onChange={(e) => handleUploadImage(e)}
+            disabled={loading}
+          />
         </label>
         {/* flex gap-2 flex-wrap */}
         <div className="grid grid-cols-3 gap-2">
           {imgUrl?.length > 0 &&
             imgUrl?.map((url, i) => (
               <div key={i} className="w-32 h-32 relative rounded-lg group">
-                <Image src={url} fill alt="img" className="rounded-lg object-cover" />
+                <Image
+                  src={url}
+                  fill
+                  alt="img"
+                  className="rounded-lg object-cover"
+                />
                 <div className="absolute top-0 left-0 right-0 bottom-0 bg-[#150E0A] opacity-0 group-hover:opacity-50 flex items-center justify-center transition-opacity duration-300 gap-2">
                   <button className="text-white text-xl opacity-50 hover:opacity-100">
                     <AiOutlineEye />
                   </button>
                   <button
                     className="text-white text-xl opacity-50 hover:opacity-100"
-                    onClick={() => setImgUrl((pre) => pre.filter((imgUrl) => imgUrl !== url))}
+                    onClick={() =>
+                      setImgUrl((pre) => pre.filter((imgUrl) => imgUrl !== url))
+                    }
                   >
                     <AiOutlineDelete />
                   </button>

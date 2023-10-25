@@ -12,10 +12,13 @@ const useCartStore = create<ICart>()(
   persist(
     (set, get) => ({
       cart: [],
-      addToCart: (product) => set((state) => ({ cart: [...state.cart, product] })),
+      addToCart: (product) =>
+        set((state) => ({ cart: [...state.cart, product] })),
       resetCard: () => set(() => ({ cart: [] })),
       removeFromCart: (productId: number) =>
-        set((state) => ({ cart: state.cart.filter((product) => product.productId !== productId) })),
+        set((state) => ({
+          cart: state.cart.filter((product) => product.productId !== productId),
+        })),
     }),
 
     { name: "cart" }

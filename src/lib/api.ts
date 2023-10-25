@@ -14,7 +14,7 @@ export async function getAllProduct(): Promise<IProductList> {
 export async function getProductByCategory(
   category: string,
   SortOrderPrice = "2"
-): Promise<IProduct> {
+): Promise<IProductList> {
   let id;
   if (category === "others") {
     id = 3;
@@ -36,7 +36,9 @@ export async function getProductByCategory(
   return res.json();
 }
 
-export async function getProductByUserId(userId: string): Promise<IProduct> {
+export async function getProductByUserId(
+  userId: string | undefined
+): Promise<IProductList> {
   const res = await fetch(`${process.env.API_URL}/product?userId=${userId}`, {
     cache: "no-cache",
   });
@@ -76,7 +78,7 @@ export async function getVoucherByProductId(productId: string) {
   return res.json();
 }
 
-export async function getUserProduct(userId: string) {
+export async function getUserProduct(userId: string | undefined) {
   const res = await fetch(
     `https://dressupexchange.somee.com/api/product?UserId=${userId}`,
     {

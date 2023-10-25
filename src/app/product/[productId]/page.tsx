@@ -1,22 +1,47 @@
 import React from "react";
-import { ProductCarousel, ProductImage, ProductInfo, Rating } from "./components";
+import {
+  ProductCarousel,
+  ProductImage,
+  ProductInfo,
+  Rating,
+} from "./components";
 import { ProductCard, Start } from "../components";
 import Link from "next/link";
-import { IProduct, IVoucher } from "@/types";
+import { IProduct, IVoucher, IProductList } from "@/types";
 import { getProductById } from "@/lib";
-import { getProductByUserId, getUserProduct, getVoucherByProductId } from "@/lib/api";
+import {
+  getProductByUserId,
+  getUserProduct,
+  getVoucherByProductId,
+} from "@/lib/api";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
-import { Autoplay, EffectCoverflow, Navigation, Pagination } from "swiper/modules";
+import {
+  Autoplay,
+  EffectCoverflow,
+  Navigation,
+  Pagination,
+} from "swiper/modules";
 
-export default async function ProductDetail({ params }: { params: { productId: string } }) {
+export default async function ProductDetail({
+  params,
+}: {
+  params: { productId: string };
+}) {
   const productPromise: Promise<IProduct> = getProductById(params.productId);
-  const voucherPromise: Promise<IVoucher> = getVoucherByProductId(params.productId);
-  const [product, voucher] = await Promise.all([productPromise, voucherPromise]);
+  const voucherPromise: Promise<IVoucher> = getVoucherByProductId(
+    params.productId
+  );
+  const [product, voucher] = await Promise.all([
+    productPromise,
+    voucherPromise,
+  ]);
   const session = await getServerSession(authOptions);
-  const listProduct: IProduct = await getProductByUserId(session?.user.userId);
+  const listProduct: IProductList = await getProductByUserId(
+    session?.user.userId
+  );
   // console.log(listProduct)
   return (
     <div>
@@ -33,7 +58,10 @@ export default async function ProductDetail({ params }: { params: { productId: s
       </div>
       <div className="bg-[#F5DCBD] p-8">
         <div className="w-[90%] mx-auto flex">
-          <ProductImage thumbnail={product?.thumbnail} images={product?.images} />
+          <ProductImage
+            thumbnail={product?.thumbnail}
+            images={product?.images}
+          />
           <ProductInfo
             name={product?.name}
             price={product?.price}
@@ -65,17 +93,15 @@ export default async function ProductDetail({ params }: { params: { productId: s
             Sản phẩm cùng người bán
           </h4>
           <div className="w-full gap-2 grid grid-cols-5 mt-3">
-            {
-            listProduct?.items.map((product) => (
+            {listProduct?.items.map((product) => (
               <ProductCarousel
-              key={product.productId}
-              name={product.name}
-              price={product.price}
-              productId={product.productId}
-              thumbnail={product.thumbnail}
-            />
-          ))}
-            
+                key={product.productId}
+                name={product.name}
+                price={product.price}
+                productId={product.productId}
+                thumbnail={product.thumbnail}
+              />
+            ))}
           </div>
         </div>
       </div>

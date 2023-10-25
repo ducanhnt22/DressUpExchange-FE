@@ -21,24 +21,26 @@ type props = {
       };
     }
   ];
-  token: string;
+  token: string | undefined;
 };
 
 export default function MyProductList({ userProduct, token }: props) {
   return (
     <div>
-      <div className="flex font-bold text-3xl my-4 justify-center">My Product</div>
+      <div className="flex font-bold text-3xl my-4 justify-center">
+        My Product
+      </div>
       <div className="grid grid-cols-4 gap-2 p-2">
-      {userProduct.map((product) => (
-        <UserProductCard
-          name={product.name}
-          price={product.price}
-          productId={product.productId}
-          thumbnail={product.thumbnail}
-          key={product.productId}
-          token={token}
-        />
-      ))}
+        {userProduct.map((product) => (
+          <UserProductCard
+            name={product.name}
+            price={product.price}
+            productId={product.productId}
+            thumbnail={product.thumbnail}
+            key={product.productId}
+            token={token}
+          />
+        ))}
       </div>
     </div>
   );
