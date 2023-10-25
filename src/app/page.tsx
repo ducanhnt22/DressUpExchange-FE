@@ -15,6 +15,7 @@ type SearchParamsProps = {
 
 export default async function Product({ searchParams }: SearchParamsProps) {
   const listProduct: IProductList = await getAllProduct();
+
   return (
     <div className="h-full bg-[#F5DCBD] pb-20">
       <Slide />

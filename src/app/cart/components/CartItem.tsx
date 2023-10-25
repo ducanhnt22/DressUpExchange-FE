@@ -82,7 +82,10 @@ export default function CartItem({
       </div>
 
       <h2 className="w-2/5">{price.toLocaleString()}vnd</h2>
-      <button className="w-2/5 text-left" onClick={() => removeFromCart(productId)}>
+      <button
+        className="w-2/5 text-left"
+        onClick={() => removeFromCart(productId)}
+      >
         Xóa
       </button>
     </div>

@@ -1,10 +1,11 @@
 "use client";
 import { BsCart2 } from "react-icons/bs";
-import React from "react";
+import React, { useState } from "react";
 import useCartStore from "@/store/cart";
 import CartItem from "./CartItem";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
 type props = {
   address: string;
@@ -13,6 +14,7 @@ type props = {
   token: string;
 };
 export default function CartList({ address, name, phone, token }: props) {
+  const [paymentMethod, setPaymentMethod] = useState("");
   const router = useRouter();
   const { cart, resetCard } = useCartStore();
   let a = 0;
@@ -23,7 +25,10 @@ export default function CartList({ address, name, phone, token }: props) {
   const handleOrder = async () => {
     const res = await fetch("https://dressupexchange.somee.com/api/order", {
       method: "POST",
-      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         totalAmount: a + 50000,
         shippingAddress: address,
@@ -34,6 +39,29 @@ export default function CartList({ address, name, phone, token }: props) {
     resetCard();
     toast.success("Mua hàng thành công !! cảm ơn bạn đã ủng hộ !!");
     router.push("/");
+  };
+
+  const handleOrderVnpay = async () => {
+    const res = await fetch(
+      `https://dressupexchange.somee.com/api/payment/order-payment`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          totalAmount: a + 50000,
+          shippingAddress: address,
+          orderItemsRequest: cart,
+        }),
+      }
+    );
+    if (res.ok) {
+      const data = await res.json();
+      resetCard();
+      router.push(data.url);
+    }
   };
 
   return (
@@ -82,29 +110,71 @@ export default function CartList({ address, name, phone, token }: props) {
       </div>
 
       <div className="flex bg-[#FEFAF6] justify-between px-8 py-2">
-        <input type="text" placeholder="Chú thích, dặn dò Shop" className="w-1/4 h-8 my-auto p-2" />
+        <input
+          type="text"
+          placeholder="Chú thích, dặn dò Shop"
+          className="w-1/4 h-8 my-auto p-2"
+        />
         <div>
           <span className="block"> Đơn vị vận chuyển: Nhanh</span>
           <span className="block">Phí ship: 50.000 VND</span>
         </div>
       </div>
 
-      <div className="bg-[#EFE9E2] p-8 flex justify-center items-end mt-2 flex-col">
-        <div className="flex items-center">
-          <div>
-            <h3>Tổng tiền hàng:</h3>
-            <h3>Phí vận chuyển:</h3>
-            <h3>Tổng thanh toán:</h3>
+      <div className="bg-[#EFE9E2] p-8 flex mt-2 justify-between items-center">
+        <div className="flex flex-col items-center justify-center gap-1">
+          <div className="flex items-center gap-2">
+            <label htmlFor="cod">COD</label>
+            <input
+              type="radio"
+              name="payment"
+              value={"cod"}
+              id="cod"
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            />
           </div>
-          <div>
-            <h3>{a.toLocaleString()}VND</h3>
-            <h3>50.000VND</h3>
-            <h3>{(a + 50000).toLocaleString()}VND</h3>
+          <div className="flex items-center gap-2">
+            <label htmlFor="vnpay">VNPAY</label>
+            <input
+              type="radio"
+              name="payment"
+              value={"vnpay"}
+              id="vnpay"
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            />
           </div>
         </div>
-        <button className="bg-[#FF9900] text-[#4F402A] rounded-sm p-2 ml-10" onClick={handleOrder}>
-          MUA NGAY
-        </button>
+
+        <div>
+          <div className="flex justify-center">
+            <div>
+              <h3>Tổng tiền hàng:</h3>
+              <h3>Phí vận chuyển:</h3>
+              <h3>Tổng thanh toán:</h3>
+            </div>
+            <div>
+              <h3>{a.toLocaleString()}VND</h3>
+              <h3>50.000VND</h3>
+              <h3>{(a + 50000).toLocaleString()}VND</h3>
+            </div>
+          </div>
+          {paymentMethod === "cod" && (
+            <button
+              className="bg-[#FF9900] text-[#4F402A] rounded-sm p-2 ml-10 float-right mt-2"
+              onClick={handleOrder}
+            >
+              MUA NGAY
+            </button>
+          )}
+          {paymentMethod === "vnpay" && (
+            <button
+              className="bg-[#FF9900] text-[#4F402A] rounded-sm p-2 ml-10 float-right mt-2"
+              onClick={handleOrderVnpay}
+            >
+              MUA NGAY
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

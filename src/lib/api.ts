@@ -38,14 +38,14 @@ export async function getProductByCategory(
 
 export async function getProductByUserId(userId: string): Promise<IProduct> {
   const res = await fetch(`${process.env.API_URL}/product?userId=${userId}`, {
-    next: { revalidate: 120 },
+    cache: "no-cache",
   });
   return res.json();
 }
 
 export async function getProductById(ProductId: string): Promise<IProduct> {
   const res = await fetch(`${process.env.API_URL}/product/${ProductId}`, {
-    next: { revalidate: 300 },
+    cache: "no-cache",
   });
   return res.json();
 }
